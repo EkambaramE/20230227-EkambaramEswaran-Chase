@@ -28,6 +28,12 @@ class NetworkManager: NetworkManagerProtocol {
         self.coreLocation = coreLocation
     }
     
+    
+    /// Fetch API Service call
+    /// - Parameters:
+    ///   - url: url description
+    ///   - model: model description
+    ///   - completion: completion description
     func fetchAPIService<T: Codable>(_ url: URL, model: T.Type, completion: @escaping (Result<Any, Error>) -> Void) {
         
         let request = URLRequest(url: url)
@@ -54,6 +60,11 @@ class NetworkManager: NetworkManagerProtocol {
         task.resume()
     }
     
+    
+    /// Fetch the Weather info service call
+    /// - Parameters:
+    ///   - keySearch: keySearch description
+    ///   - completion: completion description
     func fetchWeatherInfo(keySearch: String, completion: @escaping (String, String) -> ()) {
         
         coreLocation?.fetchLatLonBySearch(cityName: keySearch) { lat, lon in

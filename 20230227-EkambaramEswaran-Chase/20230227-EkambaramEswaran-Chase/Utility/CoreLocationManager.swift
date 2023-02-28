@@ -8,12 +8,21 @@
 import Foundation
 import CoreLocation
 
+
+///CoreLocationManagerProtocol
 protocol CoreLocationManagerProtocol {
     func fetchLatLonBySearch(cityName: String, completion: @escaping (Double?, Double?) -> ())
 }
 
+
+/// CoreLocationManager
 class CoreLocationManager: CoreLocationManagerProtocol {
    
+    
+    /// Fetch the lat and lon based on location and zipCode
+    /// - Parameters:
+    ///   - cityName: cityName description
+    ///   - completion: completion description
     func fetchLatLonBySearch(cityName: String, completion: @escaping (Double?, Double?) -> ()) {
         
         let geoLocation = CLGeocoder()

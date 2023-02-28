@@ -32,6 +32,11 @@ class WeatherViewModel {
         self.networkManager = networkManager
     }
     
+    
+    /// Fetch location based service call
+    /// - Parameters:
+    ///   - lat: lat description
+    ///   - lon: lon description
     func fetchLocationServiceCall(lat: String, lon: String) {
         if let url = URL.weatherApiURL(lat: lat, lon: lon) {
             self.networkManager?.fetchAPIService(url, model: WeatherResponseModel.self) { result in
@@ -48,6 +53,9 @@ class WeatherViewModel {
         
     }
     
+    
+    /// Fetch the service call based on search
+    /// - Parameter keySearch: keySearch description
     func makeServiceCall(keySearch: String) {
         self.networkManager?.fetchWeatherInfo(keySearch: keySearch) { lat, lon in
             if let url = URL.weatherApiURL(lat: lat, lon: lon) {
@@ -66,6 +74,10 @@ class WeatherViewModel {
         }
     }
     
+    
+    /// Fetch Image URL
+    /// - Parameter isLocationBasedWeather: isLocationBasedWeather description
+    /// - Returns: description
     func fetchImageURL(isLocationBasedWeather: Bool = false) -> URL? {
         if isLocationBasedWeather {
             if let icon = currentLocationModel?.weather?[0].icon, let url = URL(string: String(format: "%@%@@2x.png", kImageBaseURL,  icon)) {
@@ -79,6 +91,10 @@ class WeatherViewModel {
         return nil
     }
     
+    
+    /// Fetch Celsius
+    /// - Parameter isLocationBasedWeather: isLocationBasedWeather description
+    /// - Returns: description
     func fetchCelsius(isLocationBasedWeather: Bool = false) -> String {
         if isLocationBasedWeather {
             return Utility.fetchCelsius(k: currentLocationModel?.main.feels_like ?? 0.0) + "°C"
@@ -88,6 +104,10 @@ class WeatherViewModel {
         
     }
     
+    
+    /// DescriptionFetch Feels like
+    /// - Parameter isLocationBasedWeather: isLocationBasedWeather description
+    /// - Returns: description
     func fetchFeelsLike(isLocationBasedWeather: Bool = false) -> String {
         if isLocationBasedWeather {
             let status = currentLocationModel?.weather?[0].main ?? ""
@@ -102,6 +122,10 @@ class WeatherViewModel {
         }
     }
     
+    
+    /// Fetch the Humidity
+    /// - Parameter isLocationBasedWeather: isLocationBasedWeather description
+    /// - Returns: description
     func fetchHumidity(isLocationBasedWeather: Bool = false) -> String {
         if isLocationBasedWeather {
             let humidity = currentLocationModel?.main.humidity ?? 0

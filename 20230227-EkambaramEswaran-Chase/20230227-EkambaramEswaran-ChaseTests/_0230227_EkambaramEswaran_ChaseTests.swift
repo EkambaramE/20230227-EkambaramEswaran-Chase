@@ -10,9 +10,9 @@ import XCTest
 
 final class _0230227_EkambaramEswaran_ChaseTests: XCTestCase {
     
-    var weatherViewModel: WeatherViewModel!
-    var mockNetworkManage: MockNetworkManager!
-    var networkManger: NetworkManager!
+    var weatherViewModel: WeatherViewModel?
+    var mockNetworkManage: MockNetworkManager?
+    var networkManger: NetworkManager?
     var homeVC = HomeViewController()
     var detailVC = DetailViewController()
     var searchVC = SearchResultViewController()
@@ -20,17 +20,19 @@ final class _0230227_EkambaramEswaran_ChaseTests: XCTestCase {
     override func setUp() {
         super.setUp()
     
-        let storyBoard = UIStoryboard(name: "Main", bundle: Bundle.main)
-        homeVC = (storyBoard.instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController)!
-        homeVC.navigateToDetailViewController()
-        homeVC.tableView.didAddSubview(UIView())
-        homeVC.loadView()
+        if let homeVC = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController {
+            homeVC.navigateToDetailViewController()
+            homeVC.updateRecentlySearchResult(keySearch: "Chicago")
+            homeVC.refreshTableView()
+            homeVC.tableView.didAddSubview(UIView())
+            homeVC.loadView()
+        }
         
-        let storyBoard1 = UIStoryboard(name: "Main", bundle: Bundle.main)
-        detailVC = (storyBoard1.instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController)!
-        detailVC.updateUI()
-        detailVC.viewDidLoad()
-        detailVC.loadView()
+        if let detailVC = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "DetailViewController") as? DetailViewController {
+            detailVC.updateUI()
+            detailVC.viewDidLoad()
+            detailVC.loadView()
+        }
         
         let searchVC = SearchResultViewController()
         searchVC.searchBarCancelButtonClicked(UISearchBar())
@@ -41,14 +43,14 @@ final class _0230227_EkambaramEswaran_ChaseTests: XCTestCase {
         
         //Given
         mockNetworkManage = MockNetworkManager()
-        weatherViewModel = WeatherViewModel(networkManager: mockNetworkManage)
-        mockNetworkManage.responseModel = WeatherResponseModel(coord: Coord(lon: 10.99, lat: 44.34), base: "stations", main: Main(temp: 271.98, feels_like: 271.98, temp_min: 270.52, temp_max: 270.52, pressure: 1021, humidity: 93), wind: Wind(speed: 0.67, deg: 337), clouds: Clouds(all: 100), sys: Sys(country: "IT", sunrise: 1677477465, sunset: 1677517218), name: "Zocca")
+        weatherViewModel = WeatherViewModel(networkManager: mockNetworkManage ?? MockNetworkManager())
+        mockNetworkManage?.responseModel = WeatherResponseModel(coord: Coord(lon: 10.99, lat: 44.34), base: "stations", main: Main(temp: 271.98, feels_like: 271.98, temp_min: 270.52, temp_max: 270.52, pressure: 1021, humidity: 93), wind: Wind(speed: 0.67, deg: 337), clouds: Clouds(all: 100), sys: Sys(country: "IT", sunrise: 1677477465, sunset: 1677517218), name: "Zocca")
 
         //When
-        weatherViewModel.makeServiceCall(keySearch: "Chicago")
+        weatherViewModel?.makeServiceCall(keySearch: "Chicago")
         
         //Then
-        XCTAssertEqual(self.weatherViewModel.responseModel?.name, "Zocca")
+        XCTAssertEqual(self.weatherViewModel?.responseModel?.name, "Zocca")
         
     }
     
@@ -91,9 +93,11 @@ final class _0230227_EkambaramEswaran_ChaseTests: XCTestCase {
     func testNetworkManagerCall() throws {
         let expectation = expectation(description: "Fetch API")
         networkManger = NetworkManager()
-        networkManger.fetchAPIService(URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=5dd5000d347c9095f61d9d75f37f0b5c")!, model: WeatherResponseModel.self) { result in
-            XCTAssertNotNil(result)
-            expectation.fulfill()
+        if let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=5dd5000d347c9095f61d9d75f37f0b5c") {
+            networkManger?.fetchAPIService(url, model: WeatherResponseModel.self) { result in
+                XCTAssertNotNil(result)
+                expectation.fulfill()
+            }
         }
         waitForExpectations(timeout: 2.0)
     }
@@ -101,7 +105,7 @@ final class _0230227_EkambaramEswaran_ChaseTests: XCTestCase {
     func testFetchWeather() throws {
         let expectation = expectation(description: "Fetch API")
         networkManger = NetworkManager()
-        networkManger.fetchWeatherInfo(keySearch: "Chicago") { lat, lon in
+        networkManger?.fetchWeatherInfo(keySearch: "Chicago") { lat, lon in
             XCTAssertNotNil(lat)
             XCTAssertNotNil(lon)
             expectation.fulfill()
@@ -113,59 +117,59 @@ final class _0230227_EkambaramEswaran_ChaseTests: XCTestCase {
     func testFetchCelsius() throws {
         //Given
         mockNetworkManage = MockNetworkManager()
-        weatherViewModel = WeatherViewModel(networkManager: mockNetworkManage)
-        mockNetworkManage.responseModel = WeatherResponseModel(coord: Coord(lon: 10.99, lat: 44.34), base: "stations", main: Main(temp: 271.98, feels_like: 271.98, temp_min: 270.52, temp_max: 270.52, pressure: 1021, humidity: 93), wind: Wind(speed: 0.67, deg: 337), clouds: Clouds(all: 100), sys: Sys(country: "IT", sunrise: 1677477465, sunset: 1677517218), name: "Zocca")
+        weatherViewModel = WeatherViewModel(networkManager: mockNetworkManage ?? MockNetworkManager())
+        mockNetworkManage?.responseModel = WeatherResponseModel(coord: Coord(lon: 10.99, lat: 44.34), base: "stations", main: Main(temp: 271.98, feels_like: 271.98, temp_min: 270.52, temp_max: 270.52, pressure: 1021, humidity: 93), wind: Wind(speed: 0.67, deg: 337), clouds: Clouds(all: 100), sys: Sys(country: "IT", sunrise: 1677477465, sunset: 1677517218), name: "Zocca")
 
         //When
-        weatherViewModel.makeServiceCall(keySearch: "Chicago")
+        weatherViewModel?.makeServiceCall(keySearch: "Chicago")
         
         //Then
-        XCTAssertNotNil(weatherViewModel.fetchCelsius())
-        XCTAssertNotNil(weatherViewModel.fetchCelsius(isLocationBasedWeather: true))
+        XCTAssertNotNil(weatherViewModel?.fetchCelsius())
+        XCTAssertNotNil(weatherViewModel?.fetchCelsius(isLocationBasedWeather: true))
     }
     
     func testFetchImageURL() throws {
         //Given
         mockNetworkManage = MockNetworkManager()
-        weatherViewModel = WeatherViewModel(networkManager: mockNetworkManage)
-        mockNetworkManage.responseModel = WeatherResponseModel(coord: Coord(lon: 10.99, lat: 44.34), weather: [Weather(id: 2, main: "33", description: "Chica", icon: "10n")], base: "stations", main: Main(temp: 271.98, feels_like: 271.98, temp_min: 270.52, temp_max: 270.52, pressure: 1021, humidity: 93), wind: Wind(speed: 0.67, deg: 337), clouds: Clouds(all: 100), sys: Sys(country: "IT", sunrise: 1677477465, sunset: 1677517218), name: "Zocca")
+        weatherViewModel = WeatherViewModel(networkManager: mockNetworkManage ?? MockNetworkManager())
+        mockNetworkManage?.responseModel = WeatherResponseModel(coord: Coord(lon: 10.99, lat: 44.34), weather: [Weather(id: 2, main: "33", description: "Chica", icon: "10n")], base: "stations", main: Main(temp: 271.98, feels_like: 271.98, temp_min: 270.52, temp_max: 270.52, pressure: 1021, humidity: 93), wind: Wind(speed: 0.67, deg: 337), clouds: Clouds(all: 100), sys: Sys(country: "IT", sunrise: 1677477465, sunset: 1677517218), name: "Zocca")
 
         //When
-        weatherViewModel.makeServiceCall(keySearch: "Chicago")
+        weatherViewModel?.makeServiceCall(keySearch: "Chicago")
         
-        weatherViewModel.fetchLocationServiceCall(lat: "10.99", lon: "44.34")
+        weatherViewModel?.fetchLocationServiceCall(lat: "10.99", lon: "44.34")
         
         //Then
-        XCTAssertNotNil(weatherViewModel.fetchImageURL())
-        XCTAssertNotNil(weatherViewModel.fetchImageURL(isLocationBasedWeather: true))
+        XCTAssertNotNil(weatherViewModel?.fetchImageURL())
+        XCTAssertNotNil(weatherViewModel?.fetchImageURL(isLocationBasedWeather: true))
     }
     
     func testFetchFeelsLike() throws {
         //Given
         mockNetworkManage = MockNetworkManager()
-        weatherViewModel = WeatherViewModel(networkManager: mockNetworkManage)
-        mockNetworkManage.responseModel = WeatherResponseModel(coord: Coord(lon: 10.99, lat: 44.34), base: "stations", main: Main(temp: 271.98, feels_like: 271.98, temp_min: 270.52, temp_max: 270.52, pressure: 1021, humidity: 93), wind: Wind(speed: 0.67, deg: 337), clouds: Clouds(all: 100), sys: Sys(country: "IT", sunrise: 1677477465, sunset: 1677517218), name: "Zocca")
+        weatherViewModel = WeatherViewModel(networkManager: mockNetworkManage ?? MockNetworkManager())
+        mockNetworkManage?.responseModel = WeatherResponseModel(coord: Coord(lon: 10.99, lat: 44.34), base: "stations", main: Main(temp: 271.98, feels_like: 271.98, temp_min: 270.52, temp_max: 270.52, pressure: 1021, humidity: 93), wind: Wind(speed: 0.67, deg: 337), clouds: Clouds(all: 100), sys: Sys(country: "IT", sunrise: 1677477465, sunset: 1677517218), name: "Zocca")
 
         //When
-        weatherViewModel.makeServiceCall(keySearch: "Chicago")
+        weatherViewModel?.makeServiceCall(keySearch: "Chicago")
         
         //Then
-        XCTAssertNotNil(weatherViewModel.fetchFeelsLike())
-        XCTAssertNotNil(weatherViewModel.fetchFeelsLike(isLocationBasedWeather: true))
+        XCTAssertNotNil(weatherViewModel?.fetchFeelsLike())
+        XCTAssertNotNil(weatherViewModel?.fetchFeelsLike(isLocationBasedWeather: true))
     }
     
     func testFetchHumidity() throws {
         //Given
         mockNetworkManage = MockNetworkManager()
-        weatherViewModel = WeatherViewModel(networkManager: mockNetworkManage)
-        mockNetworkManage.responseModel = WeatherResponseModel(coord: Coord(lon: 10.99, lat: 44.34), base: "stations", main: Main(temp: 271.98, feels_like: 271.98, temp_min: 270.52, temp_max: 270.52, pressure: 1021, humidity: 93), wind: Wind(speed: 0.67, deg: 337), clouds: Clouds(all: 100), sys: Sys(country: "IT", sunrise: 1677477465, sunset: 1677517218), name: "Zocca")
+        weatherViewModel = WeatherViewModel(networkManager: mockNetworkManage ?? MockNetworkManager())
+        mockNetworkManage?.responseModel = WeatherResponseModel(coord: Coord(lon: 10.99, lat: 44.34), base: "stations", main: Main(temp: 271.98, feels_like: 271.98, temp_min: 270.52, temp_max: 270.52, pressure: 1021, humidity: 93), wind: Wind(speed: 0.67, deg: 337), clouds: Clouds(all: 100), sys: Sys(country: "IT", sunrise: 1677477465, sunset: 1677517218), name: "Zocca")
 
         //When
-        weatherViewModel.makeServiceCall(keySearch: "Chicago")
+        weatherViewModel?.makeServiceCall(keySearch: "Chicago")
         
         //Then
-        XCTAssertNotNil(weatherViewModel.fetchHumidity())
-        XCTAssertNotNil(weatherViewModel.fetchHumidity(isLocationBasedWeather: true))
+        XCTAssertNotNil(weatherViewModel?.fetchHumidity())
+        XCTAssertNotNil(weatherViewModel?.fetchHumidity(isLocationBasedWeather: true))
     }
     
 }
@@ -176,7 +180,9 @@ class MockNetworkManager: NetworkManagerProtocol {
     var responseModel: WeatherResponseModel?
         
     func fetchAPIService<T>(_ url: URL, model: T.Type, completion: @escaping (Result<Any, Error>) -> Void) {
-        completion(.success(responseModel!))
+        if let responseModel = responseModel {
+            completion(.success(responseModel))
+        }
     }
     
     func fetchWeatherInfo(keySearch: String, completion: @escaping (String, String) -> ()) {

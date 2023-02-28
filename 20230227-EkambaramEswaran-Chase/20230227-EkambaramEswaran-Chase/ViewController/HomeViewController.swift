@@ -37,7 +37,7 @@ class HomeViewController: UIViewController {
                 if let _ = self.viewModel.responseModel {
                     self.navigateToDetailViewController()
                 } else {
-                    //
+                    //TODO: handle the failure scenario
                 }
             }
         }
@@ -49,7 +49,7 @@ class HomeViewController: UIViewController {
                 if let _ = self.viewModel.currentLocationModel {
                     self.updateLocationWeatherUI()
                 } else {
-                    //
+                    //TODO: handle the failure scenario
                 }
             }
         }
@@ -59,7 +59,7 @@ class HomeViewController: UIViewController {
         if let url = viewModel.fetchImageURL(isLocationBasedWeather: true) {
             weatherUI.imageView?.kf.setImage(with: url)
         } else {
-            //
+            //TODO: show the default image
         }
         weatherUI.temp?.text = viewModel.fetchCelsius(isLocationBasedWeather: true)
         weatherUI.feelsLikeLabel?.text = viewModel.fetchFeelsLike(isLocationBasedWeather: true)
@@ -164,9 +164,5 @@ extension HomeViewController: CLLocationManagerDelegate {
         if lat.count > 0, lon.count > 0 {
             viewModel.fetchLocationServiceCall(lat: lat, lon: lon)
         }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Error \(error)")
     }
 }

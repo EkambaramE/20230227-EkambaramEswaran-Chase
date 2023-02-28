@@ -25,7 +25,7 @@ class DetailViewController: UIViewController {
         if let url = weatherViewModel?.fetchImageURL() {
             weatherUI.imageView?.kf.setImage(with: url)
         } else {
-            //
+            //TODO: show the default image
         }
         weatherUI.temp?.text = weatherViewModel?.fetchCelsius()
         weatherUI.feelsLikeLabel?.text = weatherViewModel?.fetchFeelsLike()

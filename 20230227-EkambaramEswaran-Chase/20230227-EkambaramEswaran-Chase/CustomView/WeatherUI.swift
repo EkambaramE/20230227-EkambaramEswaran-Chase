@@ -27,6 +27,7 @@ extension NibInstantiatable where Self: UIView {
     }
 }
 
+/// Created common UI for Weather view used in Home Screen and Details Screen
 class WeatherUI: UIView, NibInstantiatable {
     
     @IBOutlet weak var imageView: UIImageView?
