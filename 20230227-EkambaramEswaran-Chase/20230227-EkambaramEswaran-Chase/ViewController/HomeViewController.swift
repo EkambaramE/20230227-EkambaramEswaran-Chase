@@ -81,7 +81,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         title = "Weather"
         tableView.delegate = self
         tableView.dataSource = self
-        weatherUI.frame = CGRectMake(0, 0, view.bounds.width, 200);
+        weatherUI.frame = CGRectMake(0, 0, view.bounds.width, 200)
         tableView.tableFooterView = weatherUI
         tableView.isScrollEnabled = false
         tableView.frame = view.bounds
