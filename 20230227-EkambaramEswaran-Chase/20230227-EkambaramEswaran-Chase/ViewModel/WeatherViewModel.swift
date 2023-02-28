@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreLocation
+import SwiftUI
 
 
 class WeatherViewModel {
@@ -134,5 +135,10 @@ class WeatherViewModel {
             let humidity = responseModel?.main.humidity ?? 0
             return "Humidity: \(String(describing: humidity))%"
         }
+    }
+    
+    func fetchWeatherCustomUI(isLocationBasedWeather: Bool = false) -> UIHostingController<WeatherCustomUI> {
+        let child = UIHostingController(rootView: WeatherCustomUI(weatherViewModel: self))
+        return child
     }
 }

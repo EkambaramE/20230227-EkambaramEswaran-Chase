@@ -16,8 +16,18 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = weatherViewModel?.responseModel?.name
-        self.view.addSubview(weatherUI)
-        updateUI()
+       // self.view.addSubview(weatherUI)
+       // updateUI()
+        updateWeatherSwiftUIView()
+    }
+    
+    //Replaced with SwiftUI
+    func updateWeatherSwiftUIView() {
+        if let weatherView = weatherViewModel?.fetchWeatherCustomUI() {
+            weatherView.view.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(weatherView.view ?? UIView())
+            self.addChild(weatherView)
+        }
     }
     
     func updateUI() {
