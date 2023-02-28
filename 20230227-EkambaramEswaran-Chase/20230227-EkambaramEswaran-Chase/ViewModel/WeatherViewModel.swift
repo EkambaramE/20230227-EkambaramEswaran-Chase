@@ -46,7 +46,6 @@ class WeatherViewModel {
         
     }
     
-    
     func makeServiceCall(keySearch: String) {
         fetchWeatherInfo(keySearch: keySearch) { lat, lon in
             if let url = URL.weatherApiURL(lat: lat, lon: lon) {
@@ -62,7 +61,7 @@ class WeatherViewModel {
             }
         }
     }
-   
+    
     func fetchWeatherInfo(keySearch: String, completion: @escaping (String, String) -> ()) {
         let coreLocation = CoreLocationManager()
         coreLocation.fetchLatLonBySearch(cityName: keySearch) { lat, lon in

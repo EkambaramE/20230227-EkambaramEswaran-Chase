@@ -26,6 +26,7 @@ extension NibInstantiatable where Self: UIView {
         return nil
     }
 }
+
 class WeatherUI: UIView, NibInstantiatable {
     
     @IBOutlet weak var imageView: UIImageView?

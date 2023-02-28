@@ -8,7 +8,6 @@
 import Foundation
 
 struct WeatherResponseModel: Codable {
-    
     var coord: Coord
     var weather: [Weather]?
     var base: String

@@ -9,6 +9,7 @@ import CoreLocation
 import UIKit
 
 class HomeViewController: UIViewController {
+    
     var searchController: UISearchController?
     var viewModel: WeatherViewModel = WeatherViewModel()
     var searchResultViewController = SearchResultViewController()
@@ -19,7 +20,7 @@ class HomeViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return tableView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
