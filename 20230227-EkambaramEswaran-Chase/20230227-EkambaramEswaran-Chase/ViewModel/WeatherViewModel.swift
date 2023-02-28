@@ -137,7 +137,7 @@ class WeatherViewModel {
         }
     }
     
-    func fetchWeatherCustomUI(isLocationBasedWeather: Bool = false) -> UIHostingController<WeatherCustomUI> {
+    func fetchWeatherCustomUI() -> UIHostingController<WeatherCustomUI> {
         let child = UIHostingController(rootView: WeatherCustomUI(weatherViewModel: self))
         return child
     }

@@ -77,6 +77,11 @@ final class _0230227_EkambaramEswaran_ChaseTests: XCTestCase {
     func testBaseURL() throws {
         XCTAssertNotNil(URL.weatherApiURL(lat: "12.00", lon: "14.77"))
     }
+    func testFetchWeatherCustomUI() throws {
+        let view = WeatherCustomUI()
+        XCTAssertNotNil(view.body)
+        XCTAssertNil(weatherViewModel?.fetchWeatherCustomUI())
+    }
     
     func testFetchUtilityCelsius() throws {
         XCTAssertNotNil(Utility.fetchCelsius(k: 233.0))
