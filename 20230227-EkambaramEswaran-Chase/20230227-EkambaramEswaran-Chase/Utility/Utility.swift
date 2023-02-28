@@ -10,7 +10,7 @@ import Foundation
 class Utility {
     
     static func fetchCelsius(k: Double) -> String {
-        return String(round(k - 273.15))
+        return String(Int(k - 273.15))
     }
     
     

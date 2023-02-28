@@ -12,7 +12,7 @@ import CoreLocation
 class WeatherViewModel {
     
     var recentSearches: [String]? = Utility.fetchLastSearchResult()
-    var networkManager: NetworkManager?
+    var networkManager: NetworkManagerProtocol?
     var updateResponse: () -> () = {}
     var updateLocationResponse: () -> () = {}
     
@@ -28,7 +28,7 @@ class WeatherViewModel {
         }
     }
     
-    init(networkManager: NetworkManager = NetworkManager()) {
+    init(networkManager: NetworkManagerProtocol = NetworkManager()) {
         self.networkManager = networkManager
     }
     
@@ -37,7 +37,9 @@ class WeatherViewModel {
             self.networkManager?.fetchAPIService(url, model: WeatherResponseModel.self) { result in
                 switch result {
                 case.success(let response):
-                    self.currentLocationModel = response
+                    if let model = response as? WeatherResponseModel {
+                        self.currentLocationModel = model
+                    }
                 case.failure(_):
                     self.currentLocationModel = nil
                 }
@@ -47,29 +49,20 @@ class WeatherViewModel {
     }
     
     func makeServiceCall(keySearch: String) {
-        fetchWeatherInfo(keySearch: keySearch) { lat, lon in
+        self.networkManager?.fetchWeatherInfo(keySearch: keySearch) { lat, lon in
             if let url = URL.weatherApiURL(lat: lat, lon: lon) {
                 self.responseModel = nil
                 self.networkManager?.fetchAPIService(url, model: WeatherResponseModel.self) { result in
                     switch result {
                     case.success(let response):
-                        self.responseModel = response
+                        if let model = response as? WeatherResponseModel {
+                            self.responseModel = model
+                        }
                     case.failure(_):
                         self.responseModel = nil
                     }
                 }
             }
-        }
-    }
-    
-    func fetchWeatherInfo(keySearch: String, completion: @escaping (String, String) -> ()) {
-        let coreLocation = CoreLocationManager()
-        coreLocation.fetchLatLonBySearch(cityName: keySearch) { lat, lon in
-            guard let lat, let lon else {
-                completion("", "")
-                return
-            }
-            completion(String(format: "%f", lat), String(format: "%f", lon))
         }
     }
     

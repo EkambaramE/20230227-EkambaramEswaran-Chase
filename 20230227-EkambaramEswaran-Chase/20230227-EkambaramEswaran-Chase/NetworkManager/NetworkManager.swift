@@ -16,12 +16,19 @@ enum NetworkError: Error {
 }
 
 protocol NetworkManagerProtocol {
-    func fetchAPIService<T: Codable>(_ url: URL, model: T.Type, completion: @escaping (Result<T, Error>) -> Void)
+    func fetchAPIService<T: Codable>(_ url: URL, model: T.Type, completion: @escaping (Result<Any, Error>) -> Void)
+    func fetchWeatherInfo(keySearch: String, completion: @escaping (String, String) -> ()) 
 }
 
-class NetworkManager {
+class NetworkManager: NetworkManagerProtocol {
     
-    func fetchAPIService<T: Codable>(_ url: URL, model: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
+    let coreLocation: CoreLocationManager?
+    
+    init(coreLocation: CoreLocationManager = CoreLocationManager()) {
+        self.coreLocation = coreLocation
+    }
+    
+    func fetchAPIService<T: Codable>(_ url: URL, model: T.Type, completion: @escaping (Result<Any, Error>) -> Void) {
         
         let request = URLRequest(url: url)
         let configuration = URLSessionConfiguration.default
@@ -45,5 +52,16 @@ class NetworkManager {
             }
         }
         task.resume()
+    }
+    
+    func fetchWeatherInfo(keySearch: String, completion: @escaping (String, String) -> ()) {
+        
+        coreLocation?.fetchLatLonBySearch(cityName: keySearch) { lat, lon in
+            guard let lat, let lon else {
+                completion("", "")
+                return
+            }
+            completion(String(format: "%f", lat), String(format: "%f", lon))
+        }
     }
 }
