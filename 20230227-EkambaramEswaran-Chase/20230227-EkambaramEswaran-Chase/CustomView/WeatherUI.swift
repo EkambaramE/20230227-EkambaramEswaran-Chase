@@ -12,21 +12,20 @@ public protocol NibInstantiatable {
 }
 
 extension NibInstantiatable {
-    
     static func nibName() -> String {
         return String(describing: self)
     }
 }
 
 extension NibInstantiatable where Self: UIView {
-    
-    static func fromNib() -> Self {
+    static func fromNib() -> Self? {
         let bundle = Bundle(for: self)
-        let nib = bundle.loadNibNamed(nibName(), owner: self, options: nil)
-        return nib!.first as! Self
+        if let nib = bundle.loadNibNamed(nibName(), owner: self, options: nil), let self = nib.first as? Self {
+            return self
+        }
+        return nil
     }
 }
-
 class WeatherUI: UIView, NibInstantiatable {
     
     @IBOutlet weak var imageView: UIImageView?

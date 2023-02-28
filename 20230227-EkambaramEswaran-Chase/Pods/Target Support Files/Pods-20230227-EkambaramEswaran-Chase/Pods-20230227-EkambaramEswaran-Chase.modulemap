@@ -1,0 +1,6 @@
+framework module Pods_20230227_EkambaramEswaran_Chase {
+  umbrella header "Pods-20230227-EkambaramEswaran-Chase-umbrella.h"
+
+  export *
+  module * { export * }
+}

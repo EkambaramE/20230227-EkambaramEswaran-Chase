@@ -10,7 +10,7 @@ import Kingfisher
 
 class DetailViewController: UIViewController {
     
-    var weatherUI: WeatherUI = WeatherUI.fromNib()
+    var weatherUI: WeatherUI = WeatherUI.fromNib() ?? WeatherUI()
     var weatherViewModel: WeatherViewModel?
     
     override func viewDidLoad() {

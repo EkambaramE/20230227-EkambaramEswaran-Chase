@@ -9,13 +9,11 @@ import CoreLocation
 import UIKit
 
 class HomeViewController: UIViewController {
-    
-    var searchController : UISearchController?
+    var searchController: UISearchController?
     var viewModel: WeatherViewModel = WeatherViewModel()
     var searchResultViewController = SearchResultViewController()
-    var locationManager:CLLocationManager = CLLocationManager()
-    var weatherUI: WeatherUI = WeatherUI.fromNib()
-    
+    var locationManager: CLLocationManager = CLLocationManager()
+    var weatherUI: WeatherUI = WeatherUI.fromNib() ?? WeatherUI()
     var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -29,7 +27,6 @@ class HomeViewController: UIViewController {
         initLocationService()
         updateResult()
         updateLocationResult()
-        
     }
     
     func updateResult() {

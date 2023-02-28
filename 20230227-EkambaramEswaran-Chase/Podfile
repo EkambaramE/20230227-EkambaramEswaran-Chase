@@ -1,0 +1,20 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target '20230227-EkambaramEswaran-Chase' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+ # pod 'SwiftLint'
+  pod 'Kingfisher', '~> 7.0'
+  # Pods for 20230227-EkambaramEswaran-Chase
+
+  target '20230227-EkambaramEswaran-ChaseTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target '20230227-EkambaramEswaran-ChaseUITests' do
+    # Pods for testing
+  end
+
+end
