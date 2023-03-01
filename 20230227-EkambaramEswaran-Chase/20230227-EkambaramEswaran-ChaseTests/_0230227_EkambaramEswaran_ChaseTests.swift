@@ -184,8 +184,8 @@ class MockNetworkManager: NetworkManagerProtocol {
   
     var responseModel: WeatherResponseModel?
         
-    func fetchAPIService<T>(_ url: URL, model: T.Type, completion: @escaping (Result<Any, Error>) -> Void) {
-        if let responseModel = responseModel {
+    func fetchAPIService<T: Codable>(_ url: URL, model: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
+        if let responseModel = responseModel as? T {
             completion(.success(responseModel))
         }
     }

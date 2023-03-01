@@ -16,7 +16,7 @@ enum NetworkError: Error {
 }
 
 protocol NetworkManagerProtocol {
-    func fetchAPIService<T: Codable>(_ url: URL, model: T.Type, completion: @escaping (Result<Any, Error>) -> Void)
+    func fetchAPIService<T: Codable>(_ url: URL, model: T.Type, completion: @escaping (Result<T, Error>) -> Void)
     func fetchWeatherInfo(keySearch: String, completion: @escaping (String, String) -> ()) 
 }
 
@@ -34,7 +34,7 @@ class NetworkManager: NetworkManagerProtocol {
     ///   - url: url description
     ///   - model: model description
     ///   - completion: completion description
-    func fetchAPIService<T: Codable>(_ url: URL, model: T.Type, completion: @escaping (Result<Any, Error>) -> Void) {
+    func fetchAPIService<T: Codable>(_ url: URL, model: T.Type, completion: @escaping (Result<T, Error>) -> Void) {
         
         let request = URLRequest(url: url)
         let configuration = URLSessionConfiguration.default

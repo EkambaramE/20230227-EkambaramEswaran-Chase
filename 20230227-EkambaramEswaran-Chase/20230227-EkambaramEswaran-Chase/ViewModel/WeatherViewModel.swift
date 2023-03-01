@@ -43,9 +43,7 @@ class WeatherViewModel {
             self.networkManager?.fetchAPIService(url, model: WeatherResponseModel.self) { result in
                 switch result {
                 case.success(let response):
-                    if let model = response as? WeatherResponseModel {
-                        self.currentLocationModel = model
-                    }
+                    self.currentLocationModel = response
                 case.failure(_):
                     self.currentLocationModel = nil
                 }
@@ -64,9 +62,7 @@ class WeatherViewModel {
                 self.networkManager?.fetchAPIService(url, model: WeatherResponseModel.self) { result in
                     switch result {
                     case.success(let response):
-                        if let model = response as? WeatherResponseModel {
-                            self.responseModel = model
-                        }
+                        self.responseModel = response
                     case.failure(_):
                         self.responseModel = nil
                     }
